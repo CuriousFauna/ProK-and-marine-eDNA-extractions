@@ -15,3 +15,5 @@ The raw pipeline output is the "proK_eDNAFlow_Output.csv" file located in the Da
 ## Data and R Code
 
 All data and R code used to obtain the resultes are presented in the Data and R Code folders. The R code is presented in a quarto file. R packages needed to process the data are provided in the respective heading of each R File.
+
+Some of the figures were brought into Adobe Illustrator to move legends, unify colors, and change font types and sizes for publication.
