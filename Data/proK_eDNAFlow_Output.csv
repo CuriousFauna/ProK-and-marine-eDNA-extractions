@@ -1,0 +1,107 @@
+domain,kingdom,phylum,class,order,family,genus,species,OTU,numberOfUnq_BlastHits,P1,P10,P11,P12,P13,P14,P15,P16,P17,P18,P19,P2,P20,P21,P3,P7,P8,P9
+Eukaryota,Metazoa,Chordata,Mammalia,Primates,Hominidae,Homo,Homo sapiens,Zotu2052,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8
+Eukaryota,Metazoa,Nemertea,Palaeonemertea,Archinemertea,dropped,dropped,dropped,Zotu2022,3,0,0,0,4,1,6,0,0,0,0,0,0,0,0,0,0,0,0
+Eukaryota,,Haptophyta,,Isochrysidales,Noelaerhabdaceae,Gephyrocapsa,Gephyrocapsa oceanica,Zotu1868,1,3,0,1,0,0,0,1,0,3,0,0,0,0,0,1,0,0,3
+Eukaryota,Metazoa,Porifera,Demospongiae,,,,Verongimorpha sp. 1 JV-2020,Zotu1726,1,0,2,0,1,0,2,0,1,0,7,0,2,0,0,0,0,0,0
+Eukaryota,Metazoa,Xenacoelomorpha,,Acoela,Sagittiferidae,Convolutriloba,Convolutriloba retrogemma,Zotu1568,1,0,0,0,0,0,2,0,0,0,1,0,5,0,0,3,0,0,5
+Eukaryota,Metazoa,Mollusca,Gastropoda,dropped,dropped,dropped,dropped,Zotu1737,2,0,0,0,0,0,0,3,0,0,12,0,0,0,0,0,0,0,0
+Eukaryota,Metazoa,Arthropoda,,,,,Arthropoda sp. OTU74,Zotu1810,1,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,11,0
+Eukaryota,Metazoa,Nemertea,Palaeonemertea,Archinemertea,dropped,dropped,dropped,Zotu1558,3,4,0,0,0,4,1,0,0,0,2,0,0,0,0,1,0,0,5
+Eukaryota,Metazoa,Nemertea,Palaeonemertea,Archinemertea,dropped,dropped,dropped,Zotu1406,3,0,0,0,4,0,0,0,0,10,3,0,0,0,0,2,0,0,0
+Eukaryota,Metazoa,Arthropoda,Insecta,Psocoptera,Ectopsocidae,Ectopsocus,Ectopsocus sp. KY212,Zotu1655,1,0,0,2,2,6,4,1,0,0,0,0,0,0,0,0,0,1,1
+Eukaryota,Metazoa,Mollusca,Gastropoda,Littorinimorpha,Eulimidae,,Eulimidae sp. HAW01,Zotu1658,1,0,0,0,2,2,4,2,3,0,6,0,0,0,0,0,0,0,0
+Eukaryota,Metazoa,Mollusca,Gastropoda,Nudibranchia,Facelinidae,Caloria,Caloria sp. 3 Pittman & Fiene 2020,Zotu1709,1,0,0,0,5,0,0,0,4,10,0,0,0,0,0,0,0,0,0
+Eukaryota,Metazoa,Echinodermata,Holothuroidea,Aspidochirotida,Holothuriidae,Holothuria,dropped,Zotu1619,2,0,0,0,0,0,0,0,0,0,20,0,0,0,0,0,0,0,0
+Eukaryota,Metazoa,Mollusca,Gastropoda,Cephalaspidea,Haminoeidae,Atys,Atys semistriata,Zotu1650,1,0,0,0,7,0,0,1,2,7,0,0,0,0,0,3,0,0,0
+Eukaryota,Metazoa,Arthropoda,Malacostraca,Decapoda,Xanthidae,Cyclodius,Cyclodius obscurus,Zotu1854,1,2,0,0,2,1,0,1,0,0,0,0,0,0,0,3,0,0,2
+Eukaryota,Metazoa,Chordata,Mammalia,Primates,Hominidae,Homo,Homo sapiens,Zotu1577,1,0,3,4,0,0,0,0,2,0,5,0,0,0,0,0,7,0,0
+Eukaryota,Metazoa,Mollusca,Gastropoda,Littorinimorpha,Cypraeidae,Cypraea,Cypraea tigris,Zotu1850,1,2,0,0,1,0,0,0,1,1,0,0,1,0,0,2,3,0,6
+Eukaryota,Metazoa,Arthropoda,Hexanauplia,Calanoida,Paracalanidae,Parvocalanus,Parvocalanus crassirostris,Zotu1245,1,1,0,0,12,0,0,0,0,6,0,0,0,0,0,0,3,1,0
+Eukaryota,Metazoa,Arthropoda,Hexanauplia,Calanoida,Paracalanidae,Parvocalanus,Parvocalanus crassirostris,Zotu1950,1,0,10,0,0,4,0,0,0,0,0,0,0,0,0,4,0,0,3
+Eukaryota,,Discosea,Flabellinia,Dactylopodida,Paramoebidae,Paramoeba,Paramoeba branchiphila,Zotu1237,1,0,2,0,3,1,3,3,1,1,3,0,1,0,0,2,0,0,0
+Eukaryota,,,Phaeophyceae,Ectocarpales,Chordariaceae,Cladosiphon,Cladosiphon okamuranus,Zotu1251,1,0,0,3,1,0,3,1,0,0,3,0,4,0,0,0,3,3,1
+Eukaryota,Metazoa,Echinodermata,Holothuroidea,Apodida,Synaptidae,Opheodesoma,Opheodesoma grisea,Zotu1150,1,0,0,3,3,2,1,6,2,1,0,0,1,0,0,0,1,0,5
+Eukaryota,Metazoa,Mollusca,Gastropoda,Nudibranchia,Facelinidae,,Facelinidae sp. A LC-2013,Zotu1311,1,17,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Eukaryota,Metazoa,Annelida,Polychaeta,Eunicida,Lumbrineridae,Lumbrineris,Lumbrineris perkinsi,Zotu1227,1,0,0,0,0,0,0,0,0,0,1,0,24,0,0,0,3,0,0
+Eukaryota,,Discosea,Flabellinia,Dactylopodida,Paramoebidae,Paramoeba,Paramoeba branchiphila,Zotu1610,1,5,2,0,1,2,4,2,1,1,1,0,1,0,0,0,0,2,4
+Eukaryota,Metazoa,Arthropoda,Thecostraca,Balanomorpha,Balanidae,Amphibalanus,Amphibalanus reticulatus,Zotu1394,1,6,0,1,10,2,0,2,1,0,0,0,0,0,0,0,0,0,7
+Eukaryota,Metazoa,Echinodermata,Holothuroidea,Aspidochirotida,Holothuriidae,Holothuria,Holothuria hilla,Zotu1285,1,0,1,0,5,5,1,4,2,1,8,0,0,0,0,1,0,0,1
+Eukaryota,Metazoa,Arthropoda,Malacostraca,Decapoda,Luciferidae,Lucifer,Lucifer sp. BMOO-03673,Zotu1352,1,0,0,0,27,0,0,0,0,0,0,0,0,0,0,0,4,0,0
+Eukaryota,Metazoa,Chordata,Mammalia,Primates,Hominidae,Homo,Homo sapiens,Zotu1400,2,0,0,9,0,0,15,0,6,0,0,0,0,0,0,0,1,0,0
+Eukaryota,Metazoa,Arthropoda,Arachnida,Sarcoptiformes,Pyroglyphidae,Dermatophagoides,Dermatophagoides pteronyssinus,Zotu1429,1,0,0,0,0,0,2,1,28,0,0,0,0,0,0,0,0,0,0
+Eukaryota,Metazoa,Arthropoda,Malacostraca,Decapoda,Portunidae,Thalamita,Thalamita integra,Zotu1331,1,0,0,4,1,0,10,17,0,0,0,0,0,0,0,0,0,0,0
+Eukaryota,Metazoa,Porifera,Demospongiae,dropped,dropped,dropped,dropped,Zotu2011,3,3,3,2,0,7,0,1,1,0,0,0,5,0,0,1,1,0,0
+Eukaryota,,Discosea,Flabellinia,Dactylopodida,Paramoebidae,Paramoeba,Paramoeba branchiphila,Zotu1395,1,6,0,3,0,3,0,1,0,7,3,0,1,0,0,0,1,0,4
+Eukaryota,Metazoa,Arthropoda,Branchiopoda,Diplostraca,Macrotrichidae,Macrothrix,Macrothrix sp. HE-364,Zotu1102,1,0,5,1,10,1,0,2,0,2,10,0,0,0,0,2,1,1,0
+Eukaryota,Metazoa,Arthropoda,Thecostraca,Balanomorpha,Balanidae,dropped,dropped,Zotu1234,6,7,0,0,2,0,3,2,1,1,1,0,0,0,0,3,0,1,14
+Eukaryota,Metazoa,Arthropoda,Thecostraca,Balanomorpha,Balanidae,Amphibalanus,dropped,Zotu2076,4,0,0,0,0,0,3,3,0,5,3,0,3,0,0,0,7,3,6
+Eukaryota,Viridiplantae,Chlorophyta,Chlorophyceae,Sphaeropleales,Scenedesmaceae,Tetradesmus,Tetradesmus obliquus,Zotu1146,1,0,0,0,0,0,0,0,0,0,0,0,0,37,0,0,0,0,0
+Eukaryota,Metazoa,Chordata,Mammalia,Primates,Hominidae,Homo,Homo sapiens,Zotu1205,1,0,0,0,0,2,0,0,1,0,3,31,0,0,0,0,1,0,0
+Eukaryota,Metazoa,Annelida,Polychaeta,Terebellida,Terebellidae,Nicolea,Nicolea sp. HAW01,Zotu1073,1,0,1,0,0,6,0,0,0,0,12,0,14,0,0,1,4,1,0
+Eukaryota,Metazoa,Porifera,Demospongiae,Biemnida,Biemnidae,dropped,dropped,Zotu977,5,0,4,3,0,13,5,0,3,0,0,0,0,0,0,3,2,3,0
+Eukaryota,Metazoa,Arthropoda,Thecostraca,Balanomorpha,Balanidae,Amphibalanus,dropped,Zotu1153,4,0,5,0,11,0,0,5,0,0,0,0,0,0,0,4,2,5,9
+Eukaryota,Metazoa,Porifera,Demospongiae,dropped,dropped,dropped,dropped,Zotu1023,3,3,7,0,6,2,1,1,1,3,4,0,3,0,0,3,1,0,11
+Eukaryota,Metazoa,Arthropoda,Hexanauplia,Calanoida,Paracalanidae,Parvocalanus,Parvocalanus crassirostris,Zotu983,1,2,6,0,2,0,5,0,0,1,4,0,3,0,0,1,1,0,23
+Eukaryota,Metazoa,Porifera,Demospongiae,dropped,dropped,dropped,dropped,Zotu984,3,2,4,0,7,2,1,0,12,3,9,0,3,0,0,3,2,0,0
+Eukaryota,Metazoa,Porifera,Demospongiae,Suberitida,Suberitidae,Protosuberites,dropped,Zotu1024,7,6,0,0,1,0,4,23,0,5,4,0,2,0,0,1,0,0,1
+Eukaryota,,Cercozoa,Chlorarachniophyceae,,,Bigelowiella,Bigelowiella natans,Zotu1044,1,0,1,0,1,9,1,11,6,9,0,0,0,0,0,1,4,5,2
+Eukaryota,Metazoa,Chordata,Actinopteri,Blenniiformes,Blenniidae,Omobranchus,Omobranchus obliquus,Zotu946,1,4,2,0,7,4,2,0,6,3,0,0,25,0,0,2,1,0,0
+Eukaryota,Metazoa,Cnidaria,Staurozoa,Stauromedusae,Haliclystidae,Haliclystus,Haliclystus inabai,Zotu849,1,0,0,0,0,0,0,0,0,0,0,0,59,0,0,3,0,0,0
+Eukaryota,Metazoa,Cnidaria,Anthozoa,Actiniaria,Boloceroididae,Boloceroides,Boloceroides mcmurrichi,Zotu1113,1,2,2,0,6,6,6,6,4,5,6,0,5,0,0,1,2,2,2
+Eukaryota,,Haptophyta,,Phaeocystales,Phaeocystaceae,Phaeocystis,Phaeocystis globosa,Zotu721,1,2,5,1,14,10,6,3,6,5,5,0,2,0,0,2,4,3,9
+Eukaryota,Metazoa,Cnidaria,Hydrozoa,Anthoathecata,Pandeidae,Pandeopsis,Pandeopsis ikarii,Zotu722,1,2,0,9,62,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Eukaryota,Metazoa,Porifera,Demospongiae,dropped,dropped,dropped,dropped,Zotu855,3,50,0,7,0,18,0,0,0,0,0,0,0,0,0,0,0,6,0
+Eukaryota,Metazoa,Cnidaria,Hydrozoa,Anthoathecata,Zancleopsidae,Zancleopsis,Zancleopsis dichotoma,Zotu705,1,0,6,8,12,2,2,13,25,6,9,0,0,0,0,8,0,0,0
+Eukaryota,Metazoa,Arthropoda,Insecta,Psocoptera,Liposcelididae,Liposcelis,Liposcelis entomophila,Zotu807,1,0,0,0,0,6,0,1,48,27,7,0,0,0,0,0,1,1,0
+Eukaryota,Metazoa,Chordata,Mammalia,Primates,Hominidae,Homo,Homo sapiens,Zotu696,1,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Eukaryota,Metazoa,Platyhelminthes,Rhabditophora,Polycladida,,,Acotylea sp. HAW05,Zotu890,1,4,13,1,3,27,9,4,4,4,15,0,0,0,0,2,6,2,5
+Eukaryota,Metazoa,Chordata,Mammalia,Primates,Hominidae,Homo,Homo sapiens,Zotu590,1,1,0,0,0,123,0,0,0,0,0,0,0,0,0,1,0,0,0
+Eukaryota,Metazoa,Porifera,Demospongiae,Axinellida,Raspailiidae,Echinodictyum,dropped,Zotu569,2,6,5,3,15,4,3,13,14,9,17,0,6,0,0,4,5,8,11
+Eukaryota,Metazoa,Echinodermata,Ophiuroidea,Amphilepidida,Ophiactidae,Ophiactis,dropped,Zotu577,4,0,0,1,11,0,0,34,0,41,40,0,0,0,0,2,0,0,0
+Eukaryota,Metazoa,Arthropoda,Insecta,Lepidoptera,Noctuidae,dropped,dropped,Zotu745,4,0,0,0,97,62,11,0,11,0,0,0,0,0,0,0,0,0,0
+Eukaryota,Metazoa,Arthropoda,Malacostraca,Decapoda,Alpheidae,Synalpheus,Synalpheus streptodactylus,Zotu538,2,0,8,5,17,17,14,11,14,28,27,0,0,0,0,0,2,10,20
+Eukaryota,,Haptophyta,,Isochrysidales,Noelaerhabdaceae,dropped,dropped,Zotu456,3,0,0,0,0,5,80,0,0,0,0,0,0,0,0,0,0,0,105
+Eukaryota,,Rhodophyta,Florideophyceae,Rhodachlyales,Rhodachlyaceae,Rhodachlya,Rhodachlya hawaiiana,Zotu609,1,0,4,3,27,16,19,22,22,35,47,0,0,0,0,0,16,1,6
+Eukaryota,Metazoa,Annelida,Polychaeta,Phyllodocida,Hesionidae,Syllidia,Syllidia sp. A ZW-2021,Zotu524,2,0,54,2,3,8,12,9,8,31,30,0,15,0,0,19,13,12,6
+Eukaryota,Metazoa,Arthropoda,Malacostraca,Decapoda,Xanthidae,Etisus,dropped,Zotu403,2,18,34,0,0,0,1,0,0,106,90,0,0,0,0,0,0,0,0
+Eukaryota,Metazoa,Echinodermata,Echinoidea,Camarodonta,Echinometridae,Echinometra,Echinometra mathaei,Zotu413,1,51,5,0,15,9,22,18,7,20,19,0,39,0,0,22,25,2,6
+Eukaryota,Metazoa,Mollusca,dropped,dropped,dropped,dropped,dropped,Zotu455,2,27,0,1,0,0,0,0,0,0,0,0,126,0,0,2,107,6,0
+Eukaryota,,Cercozoa,Chlorarachniophyceae,,,Bigelowiella,Bigelowiella natans,Zotu377,1,9,15,2,31,49,4,34,18,9,58,0,15,0,0,12,11,1,46
+Eukaryota,Metazoa,Porifera,Demospongiae,Haplosclerida,Niphatidae,Gelliodes,dropped,Zotu407,4,95,17,13,8,17,19,5,16,41,15,0,22,0,0,15,16,11,23
+Eukaryota,Metazoa,Annelida,Polychaeta,,Chaetopteridae,Phyllochaetopterus,dropped,Zotu355,2,18,13,13,23,25,16,16,44,37,59,0,24,0,0,12,11,7,53
+Eukaryota,Metazoa,Mollusca,Bivalvia,Ostreida,Ostreidae,Dendostrea,Dendostrea sp. MO-2014,Zotu310,1,0,0,0,163,0,0,0,0,0,62,0,69,0,0,56,16,0,0
+Eukaryota,Metazoa,Cnidaria,Anthozoa,Scleractinia,dropped,dropped,dropped,Zotu303,10,9,24,15,84,73,45,40,36,59,62,0,9,0,0,3,1,5,21
+Eukaryota,Viridiplantae,Chlorophyta,Chloropicophyceae,Chloropicales,Chloropicaceae,Chloropicon,Chloropicon roscoffensis,Zotu349,1,26,31,12,57,89,44,32,27,34,29,0,28,0,0,15,23,9,59
+Eukaryota,Metazoa,Porifera,Demospongiae,Suberitida,dropped,dropped,dropped,Zotu306,2,93,21,7,47,33,14,19,19,16,19,0,93,0,0,37,22,15,55
+Eukaryota,Metazoa,Echinodermata,Ophiuroidea,dropped,dropped,dropped,dropped,Zotu289,7,102,33,8,53,0,69,35,38,22,97,0,35,0,0,22,0,17,1
+Eukaryota,Metazoa,Echinodermata,Echinoidea,Camarodonta,Echinometridae,Echinometra,Echinometra mathaei,Zotu273,1,22,19,9,49,70,57,45,40,32,67,0,34,0,0,9,42,21,67
+Eukaryota,Metazoa,Cnidaria,Hydrozoa,Anthoathecata,Zancleopsidae,Zancleopsis,Zancleopsis dichotoma,Zotu251,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,507,0,0
+Eukaryota,Metazoa,Annelida,Polychaeta,,Chaetopteridae,Chaetopterus,Chaetopterus sp. JMM09,Zotu226,2,16,65,33,134,296,0,123,0,45,0,0,0,0,0,0,3,28,52
+Eukaryota,Metazoa,Cnidaria,Hydrozoa,Anthoathecata,Pennariidae,Pennaria,Pennaria sp. JRH-2014,Zotu246,1,17,35,14,64,81,67,59,44,57,78,0,38,0,0,10,54,13,141
+Eukaryota,Metazoa,Mollusca,Bivalvia,Ostreida,Ostreidae,dropped,dropped,Zotu262,3,0,100,0,144,0,22,25,0,0,163,0,112,0,0,25,86,0,0
+Eukaryota,Metazoa,Arthropoda,Hexanauplia,Calanoida,Paracalanidae,Bestiolina,Bestiolina similis,Zotu211,1,6,768,2,5,18,6,3,13,11,24,0,12,0,0,4,10,4,89
+Eukaryota,Metazoa,Annelida,Polychaeta,,Chaetopteridae,Chaetopterus,dropped,Zotu183,2,27,23,116,76,150,143,165,59,64,0,0,49,0,0,228,45,39,138
+Eukaryota,Metazoa,Mollusca,Bivalvia,Ostreida,Ostreidae,Dendostrea,Dendostrea frons,Zotu177,1,5,21,27,67,406,136,57,131,88,197,0,98,0,0,16,101,12,66
+Eukaryota,,Rhodophyta,Florideophyceae,Corallinales,Porolithaceae,Harveylithon,Harveylithon sp. 9,Zotu153,1,32,55,17,97,263,97,176,125,160,143,0,50,0,0,74,75,331,279
+Eukaryota,Metazoa,Mollusca,Bivalvia,Ostreida,Ostreidae,dropped,dropped,Zotu149,3,98,39,28,173,168,63,208,283,92,306,0,136,0,0,92,187,63,110
+Eukaryota,Metazoa,Porifera,Demospongiae,Suberitida,dropped,dropped,dropped,Zotu110,8,0,0,1,0,2,4,3,0,0,2,0,1,0,0,2,0,0,2232
+Eukaryota,Metazoa,Mollusca,Gastropoda,Littorinimorpha,Vermetidae,Thylaeodus,dropped,Zotu148,2,100,66,47,160,127,99,31,293,227,342,0,286,0,0,44,78,43,281
+Eukaryota,Metazoa,Arthropoda,Hexanauplia,Cyclopoida,Cyclopidae,Acanthocyclops,dropped,Zotu97,2,0,0,0,1,0,0,0,0,1,0,0,0,2439,0,0,0,0,0
+Eukaryota,Metazoa,Mollusca,Bivalvia,Ostreida,Ostreidae,dropped,dropped,Zotu100,3,412,195,48,161,567,137,72,21,460,59,0,599,0,1,55,273,6,125
+Eukaryota,Metazoa,Cnidaria,Hydrozoa,Leptothecata,Clytiidae,Clytia,Clytia gracilis,Zotu79,1,899,201,99,327,312,116,98,89,205,171,0,282,0,0,133,126,179,368
+Eukaryota,Metazoa,Mollusca,Bivalvia,Ostreida,Ostreidae,dropped,dropped,Zotu66,3,66,72,16,268,760,89,293,577,131,162,0,1057,0,0,164,152,132,173
+Eukaryota,Metazoa,Mollusca,Gastropoda,Littorinimorpha,Vermetidae,Thylaeodus,dropped,Zotu106,2,177,234,105,353,350,215,132,311,391,295,0,278,0,0,209,578,114,778
+Eukaryota,Metazoa,Cnidaria,Hydrozoa,Anthoathecata,Corynidae,Stauridiosarsia,Stauridiosarsia nipponica,Zotu68,1,402,175,205,362,448,256,402,110,193,477,1,585,0,0,488,126,69,1017
+Eukaryota,Metazoa,Cnidaria,Hydrozoa,Anthoathecata,Corynidae,Stauridiosarsia,Stauridiosarsia nipponica,Zotu49,1,424,374,212,238,887,444,406,381,362,395,0,499,0,0,251,256,197,1196
+Eukaryota,Metazoa,Mollusca,Bivalvia,Ostreida,Ostreidae,dropped,dropped,Zotu47,3,744,197,347,890,322,466,833,915,515,813,0,185,0,0,461,364,415,1048
+Eukaryota,,,Pelagophyceae,Pelagomonadales,,Aureococcus,Aureococcus anophagefferens,Zotu38,1,898,853,338,781,524,855,392,508,801,776,0,731,0,0,477,456,233,826
+Eukaryota,Metazoa,Echinodermata,Echinoidea,Temnopleuroida,Toxopneustidae,Tripneustes,dropped,Zotu28,3,803,663,421,545,935,933,1059,1050,1326,1352,0,738,0,0,612,620,203,1918
+Eukaryota,Metazoa,Mollusca,Bivalvia,Ostreida,Ostreidae,Dendostrea,Dendostrea frons,Zotu31,2,1153,1546,278,534,1171,1292,753,1030,5068,454,0,875,0,0,533,892,86,1891
+Bacteria,,Pseudomonadota,Alphaproteobacteria,Pelagibacterales,Pelagibacteraceae,,alpha proteobacterium HIMB59,Zotu30,1,1656,1350,1329,1529,2316,1431,2172,1718,2404,2879,0,1352,1,0,1171,1022,605,2237
+Bacteria,,Pseudomonadota,Alphaproteobacteria,Pelagibacterales,Pelagibacteraceae,,alpha proteobacterium HIMB59,Zotu25,1,3744,2045,2618,2902,3396,2966,3438,3025,4593,4298,0,2479,0,0,1999,2170,1151,4507
+Eukaryota,Metazoa,Chordata,Ascidiacea,Phlebobranchia,Ascidiidae,Ascidia,Ascidia ahodori,Zotu8,1,4475,2709,2104,4077,3681,4926,3341,4378,5394,5679,0,2690,0,0,2099,2129,1122,4488
+Eukaryota,,Bacillariophyta,Mediophyceae,Cymatosirales,Cymatosiraceae,Minutocellus,Minutocellus polymorphus,Zotu7,1,2844,3523,1728,4528,3812,5211,2851,4185,6894,5843,0,2584,1,2,2161,4067,1642,6793
+Eukaryota,Metazoa,Porifera,Homoscleromorpha,Homosclerophorida,Plakinidae,Plakortis,Plakortis sp. 1 JV-2020,Zotu9,1,9970,5436,2286,4220,4209,3998,1764,2245,2612,2203,1,6944,0,1,4486,3601,2043,9153
+Bacteria,,Pseudomonadota,Alphaproteobacteria,Pelagibacterales,Pelagibacteraceae,,alpha proteobacterium HIMB59,Zotu29,1,13467,7954,10617,11465,13225,11124,13713,11363,17744,16668,258,9287,0,1,8569,7714,4350,16114
+Eukaryota,Metazoa,Chordata,Mammalia,Primates,Hominidae,Homo,Homo sapiens,Zotu2,1,739,11099,13783,13260,16769,13390,13165,21521,20025,17079,22777,660,0,4,418,13593,5673,20477
+Eukaryota,Metazoa,Mollusca,Gastropoda,Trochida,Trochidae,Trochus,Trochus intextus,Zotu1,1,58958,41377,31777,43704,44027,47385,38451,36333,51366,46231,4,44249,5,12,34409,37038,19555,70981
