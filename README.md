@@ -1,4 +1,4 @@
-# ProK-and-marine-eDNA-extractions
+# ProK and marine eDNA extractions
 
 This is a repository for code and data used in the analysis of the manuscript entitled: "Proteinase K is not essential for marine eDNA metabarcoding".
 
