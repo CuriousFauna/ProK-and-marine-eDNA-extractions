@@ -6,7 +6,7 @@ This is a repository for code and data used in the analysis of the manuscript en
 Fastq files were submitted to NCBI as "Bioproject PRJNA1011351". You can type in "PRJNA1011351" into the SRA dropdown to obtained the sequences. 
 
 There are 18 files listed. The demultiplexed fastq files are named P1-P21. There are two fastq files per samples, one forward and one reverse. 
-The ProK quantities that correspond to the files names are in the metadataProK.csv file located in the Data Folder.
+The ProK quantities that correspond to the file names are in the metadataProK.csv file located in the Data Folder.
 
 Sequences were processed using a modified version of the eDNAFlow pipeline (https://zenodo.org/records/8278074).
 
