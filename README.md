@@ -14,7 +14,7 @@ The raw pipeline output is the "proK_eDNAFlow_Output.csv" file located in the Da
 
 ## Data and R Code
 
-All data and R code used to obtain the resultes are presented in the Data and R Code folders.
+All data and R code used to obtain the results are presented in the Data and R Code folders.
 
 The Data folder has several files. There's the Zotu fasta output from eDNAFlow (seq_zotus_proK.fasta), the blast results from the eDNAFlow script that compares the taxonomic identity of the top ten hits with at least 97% identity and 100% coverage (seq_blast_Results_proK.csv), the increased taxa resolution file used in the main R script (ProK_taxa_resolution.csv), the metadata file (metadataProK.csv), the QuBit values file (QuBit_proK.csv), and the resulting data from the pipeline (proK_eDNAFlow_Output.csv).
 
