@@ -51,8 +51,6 @@ for (pk in list.of.packages) {
 ```{r}
 #| echo: false
 
-setwd("~/Documents/eDNA/Prok/")
-
 proK<-read.csv("proK_eDNAFlow_Output.csv")
 metaProK<-read.csv("metadataProK.csv")
 
@@ -193,7 +191,7 @@ proK4$Log<-log(proK4$Sequence)
 
 proKTable<-reshape2::dcast(proK4, OTU_All +ID + phylum + class+ order+ family+ genus+ species ~ Quantity, fun.aggregate = sum,  value.var = "Sequence")
 
-#write.csv(proKTable, "TableS1.csv", row.names = F)
+write.csv(proKTable, "TableS1.csv", row.names = F)
 ```
 
 ## Barchart - Phyla
@@ -644,7 +642,7 @@ Heatmap(heatPro4,
         column_order = colnames(heatPro4), col = col_fun,row_names_gp = gpar(fontsize = 6),rect_gp = gpar(col = "black"),
         show_heatmap_legend = F)
 
-# brought into illustrator to alter colorations given the default coloration 
+# brought into illustrator to alter colorations for consistency
 ```
 
 ##### Sequences
@@ -671,7 +669,7 @@ Heatmap(heatProSeq4,
         column_order = colnames(heatProSeq4),col = col_fun2, row_names_gp = gpar(fontsize = 6),rect_gp = gpar(col = "white"),
         show_heatmap_legend = T)
 
-# brought into illustrator to alter colorations given the default coloration 
+# brought into illustrator to alter colorations for consistency
 ```
 
 ## Venn Diagram
@@ -685,7 +683,7 @@ ggVennDiagram(proKvenn3, label_alpha = 0) +
   #  scale_color_brewer(palette = "BuGn")
   scale_fill_distiller(palette = 1, direction = 1)
 
-# brought into illustrator to alter colorations 
+# brought into illustrator to alter colorations for consistency
 
 # Top three
 proKvennTop<-subset(proKvenn, Quantity %in% c("50 ul", "100 ul", "150 ul") )
@@ -714,7 +712,7 @@ ggVennDiagram(proKvennmid2, label_alpha = 0) +
 
 ```{r}
 
-source("~/Documents/GitHubCode/MesocosmPaper/SourceVenn.R")
+source("SourceVenn.R")
 
 ### Need to isolate each Quantity with it's corresponding ZOTUs and create a list out of the quantities to create the venn bar plot.
 
