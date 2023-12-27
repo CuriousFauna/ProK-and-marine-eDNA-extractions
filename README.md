@@ -14,8 +14,10 @@ The raw pipeline output is the "proK_eDNAFlow_Output.csv" file located in the Da
 
 ## Data and R Code
 
-All data and R code used to obtain the resultes are presented in the Data and R Code folders. The R code is presented in a quarto file. R packages needed to process the data are provided in the respective heading of each R File. 
+All data and R code used to obtain the resultes are presented in the Data and R Code folders.
 
-In the Data folder there are several files. There's the Zotu fasta output from eDNAFlow (seq_zotus_proK.fasta), the blast results from the eDNAFlow script that compares the taxonomic identity of the top ten hits with at least 97% identity and 100% coverage (seq_blast_Results_proK.csv), the increased taxa resolution file used in the R script (ProK_taxa_resolution.csv), the metadata file (metadataProK.csv), the QuBit values file (QuBit_proK.csv), and the resulting data from the pipeline (proK_eDNAFlow_Output.csv).
+The Data folder has several files. There's the Zotu fasta output from eDNAFlow (seq_zotus_proK.fasta), the blast results from the eDNAFlow script that compares the taxonomic identity of the top ten hits with at least 97% identity and 100% coverage (seq_blast_Results_proK.csv), the increased taxa resolution file used in the main R script (ProK_taxa_resolution.csv), the metadata file (metadataProK.csv), the QuBit values file (QuBit_proK.csv), and the resulting data from the pipeline (proK_eDNAFlow_Output.csv).
+
+The R folder contains the manuscript R code targeting metazoans and macroalgae (ProKAnalysis.qmd), the source code to produce VennBarPlot graph (SourceVenn.R) and the appendix code (ProK_All_Taxa.qmd). The ProK_All_Taxa.qmd was produced per a reviewers request to provide the analyses based on all identified domains and kingdoms with no additional taxonomic collapsing rather than on just metazoans and macroalgae targets. The results do not change.
 
 Note, some of the figures were brought into Adobe Illustrator to move legends, unify colors, and change font types and sizes for publication.
