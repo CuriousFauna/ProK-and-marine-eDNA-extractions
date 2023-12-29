@@ -16,7 +16,7 @@ The raw pipeline output is the "proK_eDNAFlow_Output.csv" file located in the Da
 
 All data and R code used to obtain the results are presented in the Data and R Code folders.
 
-The Data folder has several files. There's the Zotu fasta output from eDNAFlow (seq_zotus_proK.fasta), the blast results from the eDNAFlow script that compares the taxonomic identity of the top ten hits with at least 97% identity and 100% coverage (seq_blast_Results_proK.csv), the increased taxa resolution file used in the main R script (ProK_taxa_resolution.csv), the metadata file (metadataProK.csv), the QuBit values file (QuBit_proK.csv), and the resulting data from the pipeline (proK_eDNAFlow_Output.csv).
+The Data folder has several files. There's the Zotu fasta output from eDNAFlow (seq_zotus_proK.fasta), the blast results from the eDNAFlow script that compares the taxonomic identity of the top ten hits with at least 97% identity and 100% coverage (seq_blast_proK.csv), the increased taxa resolution file used in the main R script (Taxa_resolution_proK.csv), the metadata file (metadata_proK.csv), the QuBit values file (QuBit_proK.csv), and the resulting data from the pipeline (eDNAFlow_Output_proK.csv).
 
 The R folder contains the manuscript R code targeting metazoans and macroalgae (ProKAnalysis.qmd), the source code to produce VennBarPlot graph (SourceVenn.R) and the appendix code (ProK_All_Taxa.qmd). The ProK_All_Taxa.qmd is included per a reviewers request to provide the analyses based on all identified domains and kingdoms rather than on just metazoans and macroalgae targets and with no additional taxonomic collapsing. The overarching results do not change.
 
