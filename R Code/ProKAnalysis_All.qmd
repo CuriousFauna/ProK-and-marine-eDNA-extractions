@@ -1,0 +1,753 @@
+---
+title: "ProK"
+execute: 
+  echo: false
+number-sections: true
+author: "Molly Timmers"
+format:
+     html:
+       toc: true
+       self-contained: true
+       toc-location: left
+editor_options: 
+  chunk_output_type: console
+---
+
+# Data Import
+
+### Package Import 
+
+```{r}
+#| echo: false
+rm(list = ls())
+
+
+pkgTest <- function(x)
+{
+  if (!require(x,character.only = TRUE))
+  {
+    install.packages(x,dep=TRUE,repos='http://cran.us.r-project.org')
+    if(!require(x,character.only = TRUE)) stop(x, " :Package not found")
+  }
+}
+
+
+# Create list of required packages
+list.of.packages <- c("vegan", "plyr", "dplyr", "reshape2", "ComplexHeatmap","ggplot2","ggVennDiagram",
+                      "circlize", "EcolUtils", "data.table", "RColorBrewer", "ggpubr","pairwiseAdonis","ggVennDiagram", "car","funrar","emmeans")
+ 
+
+# Create list of installed packages
+pkges = installed.packages()[,"Package"]
+
+# Install and load all required pkgs
+for (pk in list.of.packages) {
+  pkgTest(pk)
+}
+
+
+```
+
+### Contaminate removal
+
+```{r}
+#| echo: false
+setwd("~/Documents/eDNA/Prok/")
+
+proK<-read.csv("proK_eDNAFlow_Output.csv")
+metaProK<-read.csv("metadataProK.csv")
+
+colSums(proK[,11:ncol(proK)])
+
+# Removing all classes that are not most likely contaminants
+proK<-subset(proK, class != "Insecta" & class != "Arachnida"& class != "Mammalia" & order != "Galliformes")
+
+# Keeping red and brown Algaes so changing Kingdom to MacroAlgae
+
+proK$kingdom<-ifelse(proK$phylum == "Rhodophyta", "MacroAlgae", proK$kingdom)
+
+# The brown algae doesn't have a phylum so making the class as it's "phlyum" name
+proK$phylum<-ifelse(proK$class == "Phaeophyceae", "Phaeophyceae", proK$phylum)
+
+proK$kingdom<-ifelse(proK$phylum == "Phaeophyceae", "MacroAlgae", proK$kingdom)
+
+
+# # Removing  singletons
+proK[proK == 1] <- 0
+
+# Exmaining negatives
+Examine <- as.data.frame(proK %>%  select(starts_with(c("P19","P20","P21"))))
+
+# Negative P19, P20, and P21 only have 2 OTUs: Zotu1 and Zotu97
+# Zotu1 has 21 sequences, reducing that number from each Sample is negligable and Zotu97 is not in any other sample so will remove negatives completely.
+proK<-subset(proK, OTU != "Zotu97")
+# removing negatives
+proK <- proK[,!names(proK) %in% c("P19","P20", "P21")]
+
+
+```
+
+### Rarefying Data
+
+```{r}
+
+subsample_df<-as.data.frame(t(proK[,11:ncol(proK)]))
+colnames(subsample_df)<-proK$OTU
+rowSums(subsample_df)
+subsample_df1<-rrarefy.perm(subsample_df,min(rowSums(subsample_df)), n= 100, round.out = T)
+subsample_df2<-as.data.table(subsample_df1)
+subsample_df3<-subsample_df2[,colSums(subsample_df2 != 0) > 0, with = F]
+rowSums(subsample_df3)
+rownames(subsample_df3)<-rownames(subsample_df)
+
+# Adding some metadata to the file
+proK2<-as.data.frame(t(subsample_df3))
+colnames(proK2)<-rownames(subsample_df3)
+proK2$OTU<-rownames(proK2)
+proK2<-proK2[,c(ncol(proK2),1:ncol(proK2)-1)]
+proK2a<-merge(proK[,1:10],proK2, by = "OTU")
+
+proK2a$numberOfUnq_BlastHits<-NULL
+
+proK2b <- reshape2::melt(proK2a, id.vars = c("domain","kingdom" ,"phylum","class" , "order" ,"family" ,"genus","species","OTU"),
+                variable.name = "Sample", value.name = "Sequence")
+proK3<-merge(metaProK,proK2b, by = "Sample")
+
+proK4<-ddply(proK3, .(Quantity,domain,kingdom,phylum,class,order,family,genus,species,OTU), summarise, Sequence = sum(Sequence))
+proK4<-subset(proK4, Sequence > 0)
+proK4$phylum<-ifelse(proK4$phylum == "", "Unknown",proK4$phylum)
+# Logging Sequences
+proK4$Log<-log(proK4$Sequence)
+# Creating a 0 or 1 value based on OTU for graphs based on ZOTUs
+proK4$Rep<-ifelse(proK4$Sequence > 0, 1, 0)
+
+proKTable<-reshape2::dcast(proK4, OTU + phylum + class+ order+ family+ genus+ species ~ Quantity, fun.aggregate = sum,  value.var = "Sequence")
+
+```
+
+# Barchart - Phyla
+
+##### Sequence Relative Abundance by ProK Quantity
+
+```{r}
+
+# pooling replicates to station
+proKBar<-ddply(proK4,.(phylum, Quantity), summarize, Sum = sum(c(Sequence)) )
+
+proKBarTotal<-aggregate(Sum ~ Quantity, data = proKBar, FUN = sum)
+colnames(proKBarTotal)[2]<-"Total"
+relPhyla<-merge(proKBar, proKBarTotal, by = "Quantity")
+relPhyla$RelAbun<-relPhyla$Sum/relPhyla$Total
+relPhyla$phylum<-ifelse(relPhyla$phylum == "", "Unknown", relPhyla$phylum)
+
+
+proOrderBar<-c("0 ul", "25 ul","50 ul","100 ul", "150 ul")
+relPhyla$Quantity<-factor(relPhyla$Quantity,  levels =proOrderBar)
+relPhyla$phylum<-as.factor(relPhyla$phylum)
+
+
+prophylum<-c("Annelida", "Arthropoda","Chordata", 
+     "Cnidaria","Echinodermata","Mollusca","Porifera",
+          "Rhodophyta", "Nemertea", "Phaeophyceae","Platyhelminthes", "Xenacoelomorpha",
+     "Bacillariophyta", "Cercozoa","Chlorophyta", "Discosea","Haptophyta", 
+     "Pseudomonadota", "Unknown")
+relPhyla$phylum<-factor(relPhyla$phylum,  levels =prophylum)
+
+ggplot(relPhyla,aes(x=Quantity, y = RelAbun, fill=phylum, order))+
+  geom_bar(stat='identity', color = "black", size = .25)+
+   ylab("Sequence relative abundance")+
+ scale_x_discrete(limits = c("0 ul", "25 ul","50 ul","100 ul", "150 ul"))+
+      scale_color_manual(values= c("Annelida" = "sienna",
+     "Arthropoda" = "brown","Chordata" = "green", 
+     "Cnidaria" = "yellow","Echinodermata" = "blue3",
+        "Mollusca" = "orange","Porifera" = "cornflowerblue",
+          "Rhodophyta" = "pink", "Nemertea" = "magenta",
+     "Phaeophyceae" = "cyan4","Platyhelminthes" = "darkviolet",     "Xenacoelomorpha" = "lightcyan3",
+     "Bacillariophyta" = "gray20", "Cercozoa" = "gray35","Chlorophyta" = "gray55","Discosea"= "gray75", "Haptophyta" = "gray90","Pseudomonadota" = "white", "Unknown" = "aliceblue"))+
+  scale_fill_manual(values= c("Annelida" = "sienna",
+  "Arthropoda" = "brown","Chordata" = "green", 
+  "Cnidaria" = "yellow","Echinodermata" = "blue3",
+    "Mollusca" = "orange","Porifera" = "cornflowerblue",
+"Rhodophyta" = "pink", "Nemertea" = "magenta",
+"Phaeophyceae" = "cyan4","Platyhelminthes" = "darkviolet",
+"Xenacoelomorpha" = "lightcyan3",
+     "Bacillariophyta" = "gray20", "Cercozoa" = "gray35","Chlorophyta" = "gray55","Discosea"= "gray75", "Haptophyta" = "gray90", 
+     "Pseudomonadota" = "white", "Unknown" = "aliceblue"))+
+  theme_bw()+
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.text=element_text(size=12),
+        panel.border = element_blank(),
+        axis.title.y = element_text(size=14),
+        axis.line.x = element_line(color="black", size = .5),
+        axis.line.y = element_line(color="black", size = .5))
+
+
+```
+
+##### BarGraph by ZOTU
+
+```{r}
+
+# pooling replicates to station
+zotuBar<-proK4
+zotuBar$Rep<-rep(1,nrow(zotuBar))  
+zotuBar2<-ddply(zotuBar,.(phylum, Quantity), summarize, Sum = sum(c(Rep)) )
+
+zotuBarTotal<-aggregate(Sum ~ Quantity, data = zotuBar2, FUN = sum)
+colnames(zotuBarTotal)[2]<-"Total"
+zotuBar3<-merge(zotuBar2, zotuBarTotal, by = "Quantity")
+zotuBar3$RelAbun<-zotuBar3$Sum/zotuBar3$Total
+
+zotuBar3$phylum<-factor(zotuBar3$phylum,  levels =prophylum)
+
+ggplot(zotuBar3,aes(x=Quantity, y = RelAbun, fill=phylum))+
+  geom_bar(stat='identity', color = "black", size = .25)+
+  ylab("ZOTU relative abundance")+
+ scale_x_discrete(limits = c("0 ul", "25 ul","50 ul","100 ul", "150 ul"))+
+         scale_color_manual(values= c("Annelida" = "sienna",
+     "Arthropoda" = "brown","Chordata" = "green", 
+     "Cnidaria" = "yellow","Echinodermata" = "blue3",
+        "Mollusca" = "orange","Porifera" = "cornflowerblue",
+          "Rhodophyta" = "pink", "Nemertea" = "magenta",
+     "Phaeophyceae" = "cyan4","Platyhelminthes" = "darkviolet",     "Xenacoelomorpha" = "lightcyan3",
+     "Bacillariophyta" = "gray20", "Cercozoa" = "gray35","Chlorophyta" = "gray55","Discosea"= "gray75", "Haptophyta" = "gray90","Pseudomonadota" = "white", "Unknown" = "aliceblue"))+
+  scale_fill_manual(values= c("Annelida" = "sienna",
+  "Arthropoda" = "brown","Chordata" = "green", 
+  "Cnidaria" = "yellow","Echinodermata" = "blue3",
+    "Mollusca" = "orange","Porifera" = "cornflowerblue",
+"Rhodophyta" = "pink", "Nemertea" = "magenta",
+"Phaeophyceae" = "cyan4","Platyhelminthes" = "darkviolet",
+"Xenacoelomorpha" = "lightcyan3",
+     "Bacillariophyta" = "gray20", "Cercozoa" = "gray35","Chlorophyta" = "gray55","Discosea"= "gray75", "Haptophyta" = "gray90", 
+     "Pseudomonadota" = "white", "Unknown" = "aliceblue"))+
+  xlab("")+
+   theme_bw()+
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.text=element_text(size=12),
+        panel.border = element_blank(),
+        axis.title.y = element_text(size=14),
+        axis.line.x = element_line(color="black", size = .5),
+        axis.line.y = element_line(color="black", size = .5))
+```
+
+# Species Rank
+
+```{r}
+pro0<-subset(proK4, Quantity == "0 ul")
+pro0<-subset(pro0, Sequence > 75)
+pro25<-subset(proK4, Quantity == "25 ul")
+pro25<-subset(pro25, Sequence > 75)
+pro50<-subset(proK4, Quantity == "50 ul")
+pro50<-subset(pro50, Sequence > 75)
+pro100<-subset(proK4, Quantity == "100 ul")
+pro100<-subset(pro100, Sequence > 75)
+pro150<-subset(proK4, Quantity == "150 ul")
+pro150<-subset(pro150, Sequence > 75)
+
+pro0_sort <- pro0[order(pro0$Sequence,decreasing = T),]
+pro25_sort <- pro25[order(pro25$Sequence,decreasing = T),]
+pro50_sort <- pro50[order(pro50$Sequence,decreasing = T),]
+pro100_sort <- pro100[order(pro100$Sequence,decreasing = T),]
+pro150_sort <- pro150[order(pro150$Sequence,decreasing = T),]
+
+
+# Create a palette with colors
+colors <- c("sienna","brown","green","yellow","blue3","orange",
+            "cornflowerblue","pink","magenta","cyan4","darkviolet",
+            "lightcyan3", "gray20", "gray35","gray55","gray75","gray90", 
+    "white","aliceblue")
+
+phyla_uniq <- unique(sort(c(as.character(pro0_sort$phylum),as.character(pro25_sort$phylum),as.character(pro50_sort$phylum),as.character(pro100_sort$phylum),as.character(pro150_sort$phylum))))
+color_phylum=NULL
+for (i in 1:length(phyla_uniq)) color_phylum[phyla_uniq[i]] <- colors[i]
+
+# Add a column with the color as a function of phylum
+# Initialize the column with 0s
+# so create a new column and fill with zeros
+pro0_sort$colors <- rep("0",nrow(pro0_sort))
+pro25_sort$colors <- rep("0",nrow(pro25_sort))
+pro50_sort$colors <- rep("0",nrow(pro50_sort))
+pro100_sort$colors <- rep("0",nrow(pro100_sort))
+pro150_sort$colors <- rep("0",nrow(pro150_sort))
+
+# Once created, fill the column with the colors
+for (i in 1:nrow(pro0_sort)) {
+  pro0_sort$colors[i] <-  color_phylum[as.character(pro0_sort$phylum[i])] }
+for (i in 1:nrow(pro25_sort)) {
+  pro25_sort$colors[i] <-  color_phylum[as.character(pro25_sort$phylum[i])] }
+for (i in 1:nrow(pro50_sort)) {
+  pro50_sort$colors[i] <-  color_phylum[as.character(pro50_sort$phylum[i])] }
+for (i in 1:nrow(pro100_sort)) {
+  pro100_sort$colors[i] <-  color_phylum[as.character(pro100_sort$phylum[i])] }
+for (i in 1:nrow(pro150_sort)) {
+  pro150_sort$colors[i] <-  color_phylum[as.character(pro150_sort$phylum[i])] }
+
+
+```
+
+##### Graphing Species Rank
+
+```{r}
+### Note, the legend in the graph needs adjusting so I brought the figure into illustrator rather than fussing with the code.
+par(mfrow=c(3,2))
+p1<-barplot(c(pro0_sort$Log),las=2,ylab="Log Sequence",col=pro0_sort$colors,main="ProK 0",cex.axis = 0.5, ylim = c(0,12))
+text(p1,pro0_sort$Log,labels = pro0_sort$OTU,cex=0.8,xpd=T, adj=c(-0.2,0.5),srt = 90)
+
+p2<-barplot(c(pro25_sort$Log),las=2,ylab="Log Sequence",col=pro25_sort$colors,main="ProK 25",cex.axis = 0.5, ylim = c(0,12))
+text(p2,pro25_sort$Log,labels = pro25_sort$OTU,cex=0.8,xpd=T, adj=c(-0.2,0.5),srt = 90)
+
+p3<-barplot(c(pro50_sort$Log),las=2,ylab="Log Sequence",col=pro50_sort$colors,main="ProK 50",cex.axis = 0.5, ylim = c(0,12))
+text(p3,pro50_sort$Log,labels = pro50_sort$OTU,cex=0.8,xpd=T, adj=c(-0.2,0.5),srt = 90)
+
+p4<-barplot(c(pro100_sort$Log),las=2,ylab="Log Sequence",col=pro100_sort$colors,main="ProK 100",cex.axis = 0.5, ylim = c(0,12))
+text(p4,pro100_sort$Log,labels = pro100_sort$OTU,cex=0.8,xpd=T, adj=c(-0.2,0.5),srt = 90)
+
+p5<-barplot(c(pro150_sort$Log),las=2,ylab="Log Sequence",col=pro150_sort$colors,main="ProK 150",cex.axis = 0.5, ylim = c(0,12))
+text(p5,pro150_sort$Log,labels = pro150_sort$OTU,cex=0.8,xpd=T, adj=c(-0.2,0.5),srt = 90)
+
+legend("bottomright",inset = c(0.4, 1.2),fill=color_phylum,legend=phyla_uniq,
+        text.font=c(rep(3,14),1,1),cex=.8,xpd=NA)
+
+
+#dev.off()
+
+```
+
+# Diversity
+
+### Data setup
+
+```{r}
+proKDiv<-reshape2::dcast(proK3, Quantity + Sample ~ OTU, value.var = "Sequence",sum)
+
+RichDiv<-ddply(proKDiv, .(Quantity, Sample),
+                    function(x){data.frame(
+                      TrueShannon = exp(diversity(x[,3:ncol(x)], index = "shannon")),
+                      TrueSimpson = 1/(1-diversity(x[,3:ncol(x)], index = "simpson")),
+                      Richness=specnumber(x[,3:ncol(x)]))})
+rownames(RichDiv)<-RichDiv$Sample
+
+# Diversity Graph
+data_summary <- function(x) {
+  m <- mean(x)
+  ymin <- m-sd(x)
+  ymax <- m+sd(x)
+  return(c(y=m,ymin=ymin,ymax=ymax))
+}
+
+proOrder<-c("0 ul", "10 ul","25 ul","50 ul","100 ul", "150 ul")
+RichDiv$Quantity<-factor(RichDiv$Quantity,  levels =proOrder)
+
+
+```
+
+##### Richness
+
+```{r}
+## Richness
+
+ggplot(RichDiv, aes(x=Quantity, y=Richness)) + 
+  geom_boxplot()+
+  geom_point(aes(color = Quantity, fill = Quantity), pch = 21, size = 6, col = "Black", lwd=3)+
+  scale_fill_manual(values = c("0 ul" = "dodgerblue" ,"100 ul" = "orange", "150 ul" = "yellow3", "25 ul"= "cyan","50 ul"= "gray") )+
+  ylab("Richness")+
+  theme_bw()+
+  xlab("ProK Amount Added")+
+ ylim(0,70)+
+  stat_summary(fun.data=data_summary)+
+  theme(legend.position = "none",
+        panel.grid = element_blank(),
+        axis.title.y = element_text(size = 12),
+        axis.text=element_text(size=8))
+
+ SummaryRichness<-RichDiv %>%
+            group_by(Quantity) %>%
+            get_summary_stats(Richness, type = "mean_sd")
+ 
+statProK<-aov(Richness ~ Quantity, data = RichDiv)
+summary(statProK)
+TukeyHSD(statProK)
+lsmeans(statProK, pairwise ~ Quantity) 
+
+ggdensity(residuals(statProK))
+ggqqplot(residuals(statProK))
+plot(statProK,1)
+# Computing Shapiro-Wilk test of normality
+shapiro.test(residuals(statProK))
+# Checking for homogeneity of variance
+bartlett.test(Richness ~ Quantity,data=RichDiv)
+leveneTest(aov(Richness~Quantity, data=RichDiv))
+# Checking for independence
+durbinWatsonTest(statProK)
+
+
+```
+
+##### True Shannon
+
+```{r}
+
+ggplot(RichDiv, aes(x=Quantity, y=TrueShannon)) + 
+  geom_boxplot()+
+  geom_point(aes(color = Quantity, fill = Quantity), pch = 21, size = 6, col = "Black", lwd=3)+
+  scale_fill_manual(values = c("0 ul" = "dodgerblue" ,"100 ul" = "orange", "150 ul" = "yellow3", "25 ul"= "cyan","50 ul"= "gray") )+
+  ylab("True Shannon")+
+  theme_bw()+
+  xlab("ProK Amount Added")+
+ ylim(0,7)+
+  stat_summary(fun.data=data_summary)+
+  theme(legend.position = "none",
+        panel.grid = element_blank(),
+        axis.title.y = element_text(size = 12),
+        axis.text=element_text(size=8))
+
+ SummaryShannon<-RichDiv %>%
+            group_by(Quantity) %>%
+            get_summary_stats(TrueShannon, type = "mean_sd")
+ 
+statProKShan<-aov(TrueShannon ~ Quantity, data = RichDiv)
+summary(statProKShan)
+TukeyHSD(statProKShan)
+lsmeans(statProKShan, pairwise ~ Quantity)
+
+ggdensity(residuals(statProKShan))
+ggqqplot(residuals(statProKShan))
+plot(statProKShan,1)
+# Computing Shapiro-Wilk test of normality
+shapiro.test(residuals(statProKShan))
+# Checking for homogeneity of variance
+bartlett.test(TrueSimpson ~ Quantity,data=RichDiv)
+leveneTest(aov(TrueSimpson~Quantity, data=RichDiv))
+# Checking for independence
+durbinWatsonTest(statProKShan)
+
+```
+
+##### True Simpson
+
+```{r}
+
+ggplot(RichDiv, aes(x=Quantity, y=TrueSimpson)) + 
+  geom_boxplot()+
+  geom_point(aes(color = Quantity, fill = Quantity), pch = 21, size = 6, col = "Black", lwd=3)+
+  scale_fill_manual(values = c("0 ul" = "dodgerblue" ,"100 ul" = "orange", "150 ul" = "yellow3", "25 ul"= "cyan","50 ul"= "gray") )+
+  ylab("True Simpson")+
+  theme_bw()+
+  xlab("ProK Amount Added")+
+ ylim(0,4)+
+  stat_summary(fun.data=data_summary)+
+  theme(legend.position = "none",
+        panel.grid = element_blank(),
+        axis.title.y = element_text(size = 12),
+        axis.text=element_text(size=8))
+
+
+SummarySimpson<-RichDiv %>%
+            group_by(Quantity) %>%
+            get_summary_stats(TrueSimpson, type = "mean_sd")
+
+statProKSimp<-aov(TrueSimpson ~ Quantity, data = RichDiv)
+summary(statProKSimp)
+TukeyHSD(statProKSimp)
+lsmeans(statProKSimp, pairwise ~ Quantity)
+
+ggdensity(residuals(statProKSimp))
+ggqqplot(residuals(statProKSimp))
+plot(statProKSimp,1)
+plot(statProKSimp,2)
+# Computing Shapiro-Wilk test of normality
+shapiro.test(residuals(statProKSimp))
+# Checking for homogeneity of variance
+bartlett.test(TrueSimpson ~ Quantity,data=RichDiv)
+leveneTest(aov(TrueSimpson~Quantity, data=RichDiv))
+# Checking for independence
+durbinWatsonTest(statProKSimp)
+
+
+```
+
+# Species Pies
+
+#### By Sequence
+
+```{r}
+
+proK5<-ddply(proK4, .(Quantity,phylum), 
+summarize, OTU = sum(Rep),Sequence = sum(Sequence))
+proK5$Quantity<-as.factor(proK5$Quantity)
+proK5$Quantity<-factor(proK5$Quantity,  levels =proOrder)
+
+ggplot(proK5, aes(x=" ", y=Sequence, group=phylum, colour=phylum, fill=phylum)) +
+  geom_bar(width = 1, stat = "identity", color = "black") +
+   scale_color_manual(values= c("Annelida" = "sienna",
+     "Arthropoda" = "brown","Chordata" = "green", 
+     "Cnidaria" = "yellow","Echinodermata" = "blue3",
+        "Mollusca" = "orange","Porifera" = "cornflowerblue",
+          "Rhodophyta" = "pink", "Nemertea" = "magenta",
+     "Phaeophyceae" = "cyan4","Platyhelminthes" = "darkviolet",
+     "Xenacoelomorpha" = "lightcyan3",     "Bacillariophyta" = "gray20", "Cercozoa" = "gray35","Chlorophyta" = "gray55","Discosea"= "gray75", "Haptophyta" = "gray90", 
+     "Pseudomonadota" = "white", "Unknown" = "aliceblue")) +
+  scale_fill_manual(values= c("Annelida" = "sienna",
+  "Arthropoda" = "brown","Chordata" = "green", 
+  "Cnidaria" = "yellow","Echinodermata" = "blue3",
+    "Mollusca" = "orange","Porifera" = "cornflowerblue",
+"Rhodophyta" = "pink", "Nemertea" = "magenta",
+"Phaeophyceae" = "cyan4","Platyhelminthes" = "darkviolet",
+"Xenacoelomorpha" = "lightcyan3",     "Bacillariophyta" = "gray20", "Cercozoa" = "gray35","Chlorophyta" = "gray55","Discosea"= "gray75", "Haptophyta" = "gray90", 
+     "Pseudomonadota" = "white", "Unknown" = "aliceblue"))+
+  coord_polar("y", start=0) + 
+  facet_grid(.~ Quantity) +theme_void() 
+
+
+```
+
+#### By ZOTU - just change y from Sequence to OTU in ggplot....
+
+```{r}
+
+ggplot(proK5, aes(x=" ", y=OTU, group=phylum, colour=phylum, fill=phylum)) +
+  geom_bar(width = 1, stat = "identity", color = "black") +
+   scale_color_manual(values= c("Annelida" = "grey40",
+     "Arthropoda" = "brown","Chordata" = "green", 
+     "Cnidaria" = "yellow","Echinodermata" = "blue3",
+        "Mollusca" = "orange","Porifera" = "cornflowerblue",
+          "Rhodophyta" = "pink", "Nemertea" = "magenta",
+     "Phaeophyceae" = "cyan4","Platyhelminthes" = "darkviolet",
+     "Xenacoelomorpha" = "lightcyan3","Bacillariophyta" = "gray20", "Cercozoa" = "gray35","Chlorophyta" = "gray55","Discosea"= "gray75", "Haptophyta" = "gray90", 
+     "Pseudomonadota" = "white", "Unknown" = "aliceblue")) +
+  scale_fill_manual(values= c("Annelida" = "grey40",
+  "Arthropoda" = "brown","Chordata" = "green", 
+  "Cnidaria" = "yellow","Echinodermata" = "blue3",
+    "Mollusca" = "orange","Porifera" = "cornflowerblue",
+"Rhodophyta" = "pink", "Nemertea" = "magenta",
+"Phaeophyceae" = "cyan4","Platyhelminthes" = "darkviolet",
+"Xenacoelomorpha" = "lightcyan3","Bacillariophyta" = "gray20", "Cercozoa" = "gray35","Chlorophyta" = "gray55","Discosea"= "gray75", "Haptophyta" = "gray90", 
+     "Pseudomonadota" = "white", "Unknown" = "aliceblue"))+
+  coord_polar("y", start=0) + 
+  facet_grid(.~ Quantity) +theme_void() 
+
+```
+
+# Heat Map
+
+#### OTUS
+
+```{r}
+heatPro<-reshape2::dcast(proK4, phylum + OTU ~ Quantity, fun.aggregate = sum,  value.var = "Sequence")
+
+col_fun=colorRamp2(c(0,1), c("white","darkgray"))
+
+heatPro2<-heatPro[,c(1,2,3,6,7,4,5)]
+heatPro3<-heatPro2[order(heatPro2$phylum),]
+
+heatPro4<-as.matrix(heatPro3[,3:ncol(heatPro3)])
+rownames(heatPro4)<-heatPro3$OTU
+
+ha<-rowAnnotation(labels= heatPro3$phylum)
+
+Heatmap(heatPro4, 
+        row_names_side =  "right",
+        left_annotation = ha,
+        row_order = rownames(heatPro4),
+        column_order = colnames(heatPro4), col = col_fun,row_names_gp = gpar(fontsize = 6),rect_gp = gpar(col = "black"),
+        show_heatmap_legend = F)
+#dev.off()
+
+
+```
+
+#### Sequences
+
+```{r}
+heatProSeq<-reshape2::dcast(proK4, phylum + OTU ~ Quantity, sum, value.var = "Log" )
+
+col_fun2=colorRamp2(c(0, 15), c( "white", "black"))
+
+
+heatProSeq2<-heatProSeq[,c(1,2,3,6,7,4,5)]
+heatProSeq3<-heatProSeq2[order(heatProSeq2$phylum),]
+
+heatProSeq4<-as.matrix(heatProSeq3[,3:ncol(heatProSeq3)])
+rownames(heatProSeq4)<-heatProSeq3$OTU
+
+ha<-rowAnnotation(labels= heatProSeq3$phylum)
+
+Heatmap(heatProSeq4, 
+        row_names_side =  "right",
+        left_annotation = ha,
+        row_order = rownames(heatProSeq4),
+        column_order = colnames(heatProSeq4),col = col_fun2, row_names_gp = gpar(fontsize = 6),rect_gp = gpar(col = "white"),
+        show_heatmap_legend = T)
+
+#dev.off()
+
+```
+
+# OTU sharing
+
+### Venn Diagram
+
+```{r}
+proKvenn<-subset(proK4, Sequence > 0)
+# All quantities
+proKvenn2<-subset(proKvenn, Quantity %in% c("0 ul", "25 ul", "50 ul", "100 ul", "150 ul") )
+proKvenn3<-split(proKvenn2$OTU,proKvenn2$Quantity)
+ggVennDiagram(proKvenn3, label_alpha = 0) +
+  #  scale_color_brewer(palette = "BuGn")
+  scale_fill_distiller(palette = 1, direction = 1)
+
+# Top three
+proKvennTop<-subset(proKvenn, Quantity %in% c("50 ul", "100 ul", "150 ul") )
+proKvennTop2<-split(proKvennTop$OTU,proKvennTop$Quantity)
+ggVennDiagram(proKvennTop2, label_alpha = 0) +
+  #  scale_color_brewer(palette = "BuGn")
+  scale_fill_distiller(palette = 1, direction = 1)
+
+# Bottom three
+proKvennBottom<-subset(proKvenn, Quantity %in% c("0 ul", "25 ul", "50 ul") )
+proKvennBottom2<-split(proKvennBottom$OTU,proKvennBottom$Quantity)
+ggVennDiagram(proKvennBottom2, label_alpha = 0) +
+  #  scale_color_brewer(palette = "BuGn")
+  scale_fill_distiller(palette = 1, direction = 1)
+
+# low med high
+proKvennmid<-subset(proKvenn, Quantity %in% c("0 ul", "50 ul", "150 ul") )
+proKvennmid2<-split(proKvennmid$OTU,proKvennmid$Quantity)
+ggVennDiagram(proKvennmid2, label_alpha = 0) +
+  #  scale_color_brewer(palette = "BuGn")
+  scale_fill_distiller(palette = 1, direction = 1)
+
+```
+
+### Barplot Unique & Shared ZOTUs
+
+```{r}
+
+source("~/Documents/GitHubCode/MesocosmPaper/SourceVenn.R")
+
+### Need to isolate each Quantity with it's corresponding ZOTUs and create a list out of the quantities to create the venn bar plot.
+
+Share<-proK4
+Share2<-Share[,c("Quantity","OTU")]
+
+# Looping through each Quantity and then throwing it into a list
+shareQuant<-c("0 ul", "25 ul", "50 ul","100 ul","150 ul")
+share_list = list()
+  for (i in 1:length(shareQuant)){
+    df<-subset(Share2, Quantity==shareQuant[i])
+    df2<-df[,c(2)]
+    share_list[[i]] <- sort(df2)
+  }
+# Naming the list by the quantity. This is why the order of the quantities was defined in shareQuant 
+  fill<- c("0 ul","25 ul","50 ul","100 ul","150 ul")
+  names(share_list) <- fill
+
+# This is grabbing the functions in the SourceVenn.R script
+OLlist <- overLapper(setlist=share_list, sep=" ", type="vennsets")
+counts <- sapply(OLlist$Venn_List, length)
+  
+#Venn Bar Plot
+  olBarplot(OLlist=OLlist, horiz=T, las=1, cex.names=0.6, main="Venn Bar Plot") 
+  
+# brought into illustrator to alter colorations given the default coloration in the olBarplot function being based on OLlist$Complexity_Levels
+```
+
+# Community Composition
+
+### Data setup
+
+```{r}
+Beta<-proKDiv
+Beta$Richness<-NULL
+X<-c("0 ul", "25 ul", "50 ul", "100 ul", "150 ul")
+Beta<-Beta %>%
+  mutate(Quantity =  factor(Quantity, levels = X)) %>%
+  arrange(Quantity)  
+metaBeta<-Beta[,1:2]
+metaBeta$ID<-paste(metaBeta$Quantity ,"_", metaBeta$Sample)
+
+BetaRel<-as.matrix(Beta[,3:ncol(Beta)])
+BetaRel = make_relative(BetaRel)
+rownames(BetaRel)<-metaBeta$ID
+BetaRel<-sqrt(BetaRel)
+
+
+```
+
+#### PERMANOVA
+
+```{r}
+BetaRel2<-vegdist(BetaRel, method = "bray")
+BetaResult<-adonis2(BetaRel2 ~ Quantity,data = metaBeta)
+BetaResult
+
+pairCom<-pairwise.adonis(BetaRel2, metaBeta$Quantity, perm = 999, p.adjust.m = "fdr")
+pairCom
+
+
+```
+
+#### PERMDISP
+
+```{r}
+B_rel<-betadisper(BetaRel2, metaBeta$Quantity, bias.adjust = T)
+permCom<-permutest(B_rel, pairwise = T, permutations = 999)
+permCom$statistic
+permCom$pairwise
+anova(B_rel)
+TukeyHSD(B_rel)
+boxplot(B_rel, col = c("dodgerblue","cyan","gray","orange","yellow3"), ylim=c(0,0.2))
+
+
+```
+
+#### PCoA graph
+
+```{r}
+Bray<-cmdscale(vegdist(BetaRel, method = "bray"), k = 2, eig = T, add = T)
+labsB<-paste("PCoA",1:4,"(", round(100*Bray$eig/sum(Bray$eig),2),"%)")
+Bray1<-ordiplot(Bray, display="sites", xlab =labsB[1],ylab=labsB[2], ylim =c(-0.10, 0.10), xlim =c(-0.10, 0.10))
+points(Bray1, "sites", pch = 19, col = "dodgerblue", select = metaBeta$Quantity == "0 ul")
+points(Bray1, "sites", pch = 19, col = "cyan", select = metaBeta$Quantity == "25 ul")
+points(Bray1, "sites", pch = 19, col = "gray", select = metaBeta$Quantity == "50 ul")
+points(Bray1, "sites", pch = 19, col = "orange", select = metaBeta$Quantity == "100 ul")
+points(Bray1, "sites", pch = 19, col = "yellow3", select = metaBeta$Quantity == "150 ul")
+ordispider(Bray1, metaBeta$Quantity, col= c("dodgerblue","cyan","gray","orange", "yellow3"))    # col= usage needs vegan 2.4-0
+ordiellipse(Bray1, metaBeta$Quantity, col= c("dodgerblue","cyan","gray","orange", "yellow3"), draw="poly", conf=0.95,kind="se", label = F)
+
+```
+
+#### Checking Dissimilarity pooled to Quantity
+
+```{r}
+{r}
+# pooling replicates to station
+proKDisMatrix<-ddply(proK4,.(OTU, Quantity), summarize, Sum = sum(c(Sequence)) )
+proKDisMatrix2<-reshape2::dcast(proKDisMatrix, Quantity ~ OTU, value.var = "Sum",sum)
+X<-c("0 ul", "25 ul", "50 ul", "100 ul", "150 ul")
+proKDisMatrix2<-proKDisMatrix2 %>%
+  mutate(Quantity =  factor(Quantity, levels = X)) %>%
+  arrange(Quantity)  
+rownames(proKDisMatrix2)<-proKDisMatrix2$Quantity
+
+# Dissimilarity matrix
+disB<-sqrt(proKDisMatrix2[,2:ncol(proKDisMatrix2)])
+disB2<-vegdist(disB, method = "bray")
+
+
+```
+
+#### Cluster
+
+```{r}
+
+h1<- hclust(BetaRel2, method = 'average')
+plot(h1, hang = -1, main = 'UPGMA')
+
+```
+
+#### 
